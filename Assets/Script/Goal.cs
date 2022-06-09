@@ -4,11 +4,13 @@ using UnityEngine;
 
 public class Goal : MonoBehaviour
 {
-    private void OnCollisionEnter(Collision collision)
+    private void OnTriggerEnter(Collider collision)
     {
         if (collision.gameObject.CompareTag("Ball"))
         {
-            Debug.Log("Vacham");
+            DestroyObject(gameObject) ;
         }
     }
+
 }
+

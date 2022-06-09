@@ -12,7 +12,13 @@ public class PrepareFire : MonoBehaviour
     Vector3 newPos;
     [SerializeField]
     GameObject Nong;
-  
+    [SerializeField]
+    GameObject Nongsung;
+    public GameObject Goal1;
+    public GameObject Goal2;
+    public GameObject Goal3;
+    public GameObject End;
+    public Button button;
 
     // Start is called before the first frame update
     void UpdateSlider()
@@ -28,17 +34,23 @@ public class PrepareFire : MonoBehaviour
         Nong.transform.eulerAngles=new Vector3(newPos.x*10,90,45);
         return newPos;
     }
+
     void Fire(Vector3 newPos)
     {
-        GameObject BallClone =Instantiate(Ball, newPos, Quaternion.identity);
-        BallClone.transform.DOMove(new Vector3(newPos.x, newPos.y,slider.value),3f,false);
+        GameObject BallClone =Instantiate(Ball, Nongsung.transform.position, Quaternion.identity);
+        var sequence = DOTween.Sequence();
+  
+        Vector3 FireNeedDestroy = new Vector3(newPos.x, newPos.y, slider.value);
+        sequence.Append(BallClone.transform.DOMove(FireNeedDestroy,3f,false));
+        sequence.Append(BallClone.transform.DOMove(new Vector3(1000,1000,1000), 0.000001f, false));
+
         slider.value = 0;
     }
     void Start()
     {
-        
+        button.onClick.AddListener(Onclick);
     }
-
+    void Onclick() { End.SetActive(false); }
     // Update is called once per frame
     void Update()
     {
@@ -47,6 +59,11 @@ public class PrepareFire : MonoBehaviour
         if(Input.GetMouseButtonUp(0)){
             Fire(newPos);
         }
+        if (Goal1 == null && Goal2 == null && Goal3 == null)
+        {
+            End.SetActive(true);
+        }
+       
     }
    
 }
